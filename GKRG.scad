@@ -3,7 +3,7 @@
 Global parameter - the minimum size of the fragment on the surface. Depends on the 3D printer, typically 0.2-0.5
 Глобальный параметр - размера минимального фрагмента на поверхности. Зависит от 3Д принтера, обычно 0.2-0.5
 */
-$fs = 0.2;
+$fs = 0.3;
 /*
 Global parameter - the size of the minimum angle for the fragment. On this depends the "smoothness" of the circles. Usually 3-7. Greatly affect the speed rendering model.
 Глобальный параметр - размер минимального угла для фрагмента. От этого зависит "гладкость" окружностей. Обычно 3-7. Сильно влияет на скорость рендера модели.
@@ -49,6 +49,12 @@ Indentation lugs on the external side of the ring
 lug_ident = 1;
 
 /*
+The diameter of the inner hole in the central sphere
+Диаметр внутреннего отверстия в центральной сфере
+*/
+diam_central_cylinder = 5;
+
+/*
 Text to display on the outer rim of the last ring. The length is not controlled, it can lead to problems. To generate Colta without text, should contain a "space" character.
 Текст для вывода на внешний обод последнего кольца. Длина никак не контролируется, что может приводить в проблемам. Для генерации колца без текста, переменная должна содержать символ "пробел".
 */
@@ -76,7 +82,7 @@ module CentralSphere() {
             sphere(d = diam_central_sphere, center = true);
             cube([diam_central_sphere, diam_central_sphere, total_height], center = true);
         }
-		cylinder(h = total_height+1, d = diam_central_sphere/2, center = true);
+		cylinder(h = total_height+1, d = diam_central_cylinder, center = true);
 	}
 }
 
