@@ -63,7 +63,7 @@ for (i = [1 : NumberOfRings]){
 	SphereN(i);
 	}
 	
-SphereFinal(NumberOfRings + 1);
+SphereFinal(NumberOfRings);
 
 module CentralSphere() {
 	difference(){
@@ -71,51 +71,41 @@ module CentralSphere() {
             sphere(d = diam_central_sphere, center = true);
             cube([diam_central_sphere, diam_central_sphere, total_height], center = true);
         }
-		cylinder(h = total_height+1, d = diam_central_sphere/2-2, center = true);
+		cylinder(h = total_height+1, d = diam_central_sphere/2, center = true);
 	}
 }
 
 module SphereN(N) {
-    cur_sphere_d = diam_central_sphere + ring_thickness * 2 * N + gap * N;
-    cur_inner_sphere_d = cur_sphere_d - ring_thickness * 2;
+    cur_sphere_d = diam_central_sphere + gap*2*N + ring_thickness*2*N;
+    cur_inner_sphere_d = cur_sphere_d - ring_thickness*2;
     
     echo("Ring:", N, ", sphere out d=", cur_sphere_d, ", in d=", cur_inner_sphere_d);
     
-	rotate_extrude(convexity = 10)
-		rotate([0, 0, 90])
-		difference() {
-			intersection(){
-				circle(d = cur_sphere_d, center = true);
-				square([total_height, cur_sphere_d], center = true);
-				}
-			translate([0, ring_thickness, 0])
-				intersection() {
-					circle(d = cur_sphere_d, center = true);
-					square([total_height + 0.001, cur_sphere_d], center = true);
-				}
-			}
+	intersection(){
+       difference() {
+           sphere(d = cur_sphere_d, center = true);
+		   sphere(d = cur_inner_sphere_d, center = true);
+           
+        }
+		cube([cur_sphere_d, cur_sphere_d, total_height], center = true);
+	}
 }
 
 module SphereFinal(N) {
-    cur_sphere_d = diam_central_sphere + ring_thickness*2*(N-1) + gap*N + last_ring_thickness*2;
+    cur_sphere_d = diam_central_sphere + ring_thickness*2*N + gap*2*N + last_ring_thickness*2 + gap*2;
     cur_inner_sphere_d = cur_sphere_d - last_ring_thickness*2; 
     
     echo("Last ring:", cur_sphere_d, "/", cur_inner_sphere_d, "N:", N);
 	
 	union(){
-	rotate_extrude(convexity = 10)
-		rotate([0, 0, 90])
-		difference(){
-			intersection(){
-				circle(d = cur_sphere_d, center = true);
-				square([total_height, cur_sphere_d], center = true);
+		intersection(){
+		   difference() {
+			   sphere(d = cur_sphere_d, center = true);
+			   sphere(d = cur_inner_sphere_d, center = true);
+			   
 			}
-			translate([0, last_ring_thickness, 0])
-				intersection(){
-					circle(d = cur_sphere_d, center = true);
-					square([total_height + 0.001, cur_sphere_d], center = true);
-				}
-			}
+			cube([cur_sphere_d, cur_sphere_d, total_height], center = true);
+		}
 			writesphere(LetteringText, [0, 0, 0], cur_sphere_d / 2, t = 2.5, h = total_height - 2, rounded = true, font = "orbitron.dxf");
 			union() {
 				translate([-total_height/3, cur_sphere_d/2+1, 0])
