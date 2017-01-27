@@ -50,7 +50,7 @@ diff_d1_d2 = 2;
 
 // Количество подвижных колец формирующих стакан
 // The number of movable rings forming glass
-NumberOfWall= 3;
+NumberOfWall= 5;
 
 // Выступ увеличивающий верхнюю часть кольца для уплотнения при сборке
 // The protrusion increases the upper part of the assembly for sealing rings
